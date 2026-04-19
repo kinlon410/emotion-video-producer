@@ -1,0 +1,81 @@
+# Emotion Video Producer - Git Ignore
+
+# CosyVoice TTS Models (external download required)
+CosyVoice/
+Fun-CosyVoice3-*/
+*.pt
+*.onnx
+*.safetensors
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment variables (user-specific)
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+
+# Output files
+output/
+videos/
+*.mp4
+*.mp3
+*.wav
+!.gitkeep
+
+# Claude Code
+.claude/
+.gstack/
+
+# Web uploads (user content)
+uploads/
+web/uploads/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
