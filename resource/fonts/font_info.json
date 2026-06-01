@@ -1,0 +1,61 @@
+{
+  "description": "字体素材库 - 风格标签",
+  "version": "1.0",
+  "fonts": [
+    {
+      "id": "font01",
+      "name": "PingFang SC",
+      "file": "/System/Library/Fonts/PingFang.ttc",
+      "description": "苹果默认中文字体，清晰易读",
+      "tags": {
+        "class": "Basic",
+        "lang": "zh"
+      },
+      "styles": ["Regular", "Semibold", "Bold"]
+    },
+    {
+      "id": "font02",
+      "name": "Helvetica",
+      "file": "/System/Library/Fonts/Helvetica.ttc",
+      "description": "经典西文字体，简洁现代",
+      "tags": {
+        "class": "Basic",
+        "lang": "en"
+      },
+      "styles": ["Regular", "Bold"]
+    },
+    {
+      "id": "font03",
+      "name": "Songti SC",
+      "file": "/System/Library/Fonts/Supplemental/Songti.ttc",
+      "description": "宋体，适合文艺/古典风格",
+      "tags": {
+        "class": "Calligraphy",
+        "lang": "zh"
+      },
+      "styles": ["Regular", "Bold"]
+    },
+    {
+      "id": "font04",
+      "name": "Kaiti SC",
+      "file": "/System/Library/Fonts/Supplemental/Kaiti.ttc",
+      "description": "楷体，适合书法/文艺风格",
+      "tags": {
+        "class": "Calligraphy",
+        "lang": "zh"
+      },
+      "styles": ["Regular"]
+    },
+    {
+      "id": "font05",
+      "name": "Heiti SC",
+      "file": "/System/Library/Fonts/Supplemental/Heiti.ttc",
+      "description": "黑体，适合现代/科技风格",
+      "tags": {
+        "class": "Creative",
+        "lang": "zh"
+      },
+      "styles": ["Regular", "Bold"]
+    }
+  ]
+}

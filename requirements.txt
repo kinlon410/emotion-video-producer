@@ -1,0 +1,40 @@
+# Emotion Video Producer Dependencies
+
+# Audio analysis
+librosa>=0.10.0
+numpy>=1.24.0
+soundfile>=0.12.0
+
+# API clients
+requests>=2.28.0
+dashscope>=1.14.0
+
+# TTS providers
+edge-tts>=6.1.0  # Microsoft Edge-TTS (免费)
+
+# Streamlit Web UI
+streamlit>=1.30.0
+
+# Async task queue
+celery[redis]>=5.3.0
+redis>=4.5.0
+
+# WebSocket
+flask_sock>=0.1.0
+simple-websocket>=1.0.0
+
+# Async HTTP
+aiohttp>=3.8.0
+
+# Data validation
+pydantic>=2.0.0
+
+# Video processing (FFmpeg wrapper)
+# Note: FFmpeg must be installed separately via brew/apt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Optional: Local ASR fallback
+# openai-whisper>=20231117

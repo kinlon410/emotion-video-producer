@@ -1,11 +1,13 @@
 # Emotion Video Producer - Git Ignore
 
-# CosyVoice TTS Models (external download required)
+# External code and large local models (download separately)
 CosyVoice/
 Fun-CosyVoice3-*/
 *.pt
 *.onnx
 *.safetensors
+*.bin
+*.ckpt
 
 # Python
 __pycache__/
@@ -45,6 +47,13 @@ env/
 # Environment variables (user-specific)
 .env
 .env.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.crt
+*.cer
 
 # OS
 .DS_Store
@@ -55,14 +64,21 @@ Thumbs.db
 *.temp
 *.log
 *.bak
+tmp/
+temp/
 
-# Output files
+# Generated outputs and local media
 output/
 videos/
 *.mp4
 *.mp3
 *.wav
+*.m4a
 !.gitkeep
+output_test*
+test.wav
+test2.wav
+test_cosy.wav
 
 # Claude Code
 .claude/
@@ -71,6 +87,11 @@ videos/
 # Web uploads (user content)
 uploads/
 web/uploads/
+
+# Local runtime state
+.emotion-video-producer/
+*.sqlite
+*.db
 
 # Testing
 .pytest_cache/

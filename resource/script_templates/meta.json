@@ -1,0 +1,84 @@
+{
+  "description": "文案模板库 - 内容类型标签",
+  "version": "1.0",
+  "templates": [
+    {
+      "id": "template01",
+      "name": "励志人生",
+      "description": "励志类视频文案模板，每一步都算数风格",
+      "tags": ["Life", "Knowledge"],
+      "style": "励志",
+      "template": {
+        "intro": "人生是一场旅程，{theme}是这段旅程的起点。",
+        "verse": "我们都在寻找方向，每一步都是答案。",
+        "chorus": "{theme}，此刻，就是最好的时刻。",
+        "outro": "旅程继续，未来可期。"
+      }
+    },
+    {
+      "id": "template02",
+      "name": "治愈心灵",
+      "description": "治愈类视频文案模板，温柔细腻风格",
+      "tags": ["Life", "Health"],
+      "style": "治愈",
+      "template": {
+        "intro": "闭上眼睛，听风的声音。",
+        "verse": "慢慢走，不着急，一切都会好起来。",
+        "chorus": "{theme}，此刻值得被记住。",
+        "outro": "一切都刚刚好。"
+      }
+    },
+    {
+      "id": "template03",
+      "name": "热血冲刺",
+      "description": "热血类视频文案模板，激情澎湃风格",
+      "tags": ["Life", "Entertainment"],
+      "style": "热血",
+      "template": {
+        "intro": "夜幕降临，城市开始苏醒。",
+        "verse": "热血在燃烧，脚步不停歇。",
+        "chorus": "{theme}，燃尽所有，绝不回头！",
+        "outro": "这就是我们的时刻。"
+      }
+    },
+    {
+      "id": "template04",
+      "name": "文艺诗意",
+      "description": "文艺类视频文案模板，诗意意境风格",
+      "tags": ["Travel", "Knowledge"],
+      "style": "文艺",
+      "template": {
+        "intro": "远方有光，近处有影。",
+        "verse": "行走于{theme}，心中自有诗篇。",
+        "chorus": "诗意的{theme}，此刻永恒。",
+        "outro": "诗意不止，旅程无终。"
+      }
+    },
+    {
+      "id": "template05",
+      "name": "欢快美食",
+      "description": "欢快类视频文案模板，轻松愉悦风格",
+      "tags": ["Food", "Life"],
+      "style": "欢快",
+      "template": {
+        "intro": "清晨的第一缕阳光，美味的一天开始。",
+        "verse": "美食在眼前，快乐在心间。",
+        "chorus": "{theme}，生活就是这么美好！",
+        "outro": "吃饱喝足，继续前行。"
+      }
+    },
+    {
+      "id": "template06",
+      "name": "旅行见闻",
+      "description": "旅行类视频文案模板，探索世界风格",
+      "tags": ["Travel", "Life"],
+      "style": "励志",
+      "template": {
+        "intro": "世界很大，{theme}只是其中一个角落。",
+        "verse": "走过万水千山，遇见不同的故事。",
+        "chorus": "{theme}，旅行是最好的修行。",
+        "outro": "下一站，继续探索。"
+      }
+    }
+  ]
+}

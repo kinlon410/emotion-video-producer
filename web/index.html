@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Video Producer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@320;400;540;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/web/static/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"/>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                </span>
+                Emotion Video Producer
+            </div>
+            <div class="nav-links">
+                <a href="#templates" class="nav-link">模板</a>
+                <a href="#user-assets" class="nav-link">素材</a>
+                <a href="#api-settings" class="nav-link">API</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="steps-bar">
+        <div class="step-item active"><span class="step-num">1</span>音乐分析</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">2</span>叙事生成</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">3</span>素材选择</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">4</span>转场映射</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">5</span>字幕同步</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">6</span>TTS合成</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">7</span>素材下载</div>
+        <span class="step-arrow">→</span>
+        <div class="step-item"><span class="step-num">8</span>视频渲染</div>
+    </div>
+
+    <main>
+        <!-- 步骤1: 模板选择 -->
+        <section class="card full-width" id="templates">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="2"/>
+                        <line x1="7" y1="2" x2="7" y2="22"/>
+                        <line x1="17" y1="2" x2="17" y2="22"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">视频模板<span class="step-tag">STEP 1</span></h3>
+            </div>
+
+            <!-- 短视频模式 -->
+            <div class="form-group">
+                <label>生产模式</label>
+                <div class="mode-selector">
+                    <div class="mode-option" onclick="selectMode('normal')" data-mode="normal">
+                        <div class="mode-preview mode-normal"></div>
+                        <span class="mode-name">标准模式</span>
+                        <span class="mode-desc">适合长视频，标准分段</span>
+                    </div>
+                    <div class="mode-option active" onclick="selectMode('short')" data-mode="short">
+                        <div class="mode-preview mode-short"></div>
+                        <span class="mode-name">短视频模式</span>
+                        <span class="mode-desc">30s短视频，快切分段</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 尺寸选择 -->
+            <div class="form-group">
+                <label for="videoRatio">视频尺寸</label>
+                <div class="ratio-selector">
+                    <div class="ratio-option active" onclick="selectRatio('16:9')" data-ratio="16:9">
+                        <div class="ratio-preview ratio-horizontal"></div>
+                        <span class="ratio-name">横屏 16:9</span>
+                        <span class="ratio-desc">适合 YouTube、B站</span>
+                    </div>
+                    <div class="ratio-option" onclick="selectRatio('9:16')" data-ratio="9:16">
+                        <div class="ratio-preview ratio-vertical"></div>
+                        <span class="ratio-name">竖屏 9:16</span>
+                        <span class="ratio-desc">适合抖音、快手、小红书</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 时长控制（短视频模式专用） -->
+            <div id="durationControl" class="form-group">
+                <label for="durationLimit">时长控制</label>
+                <div class="duration-slider-container">
+                    <input type="range" id="durationSlider" min="15" max="60" value="30" class="duration-slider" oninput="updateDurationDisplay()">
+                    <div class="duration-labels">
+                        <span>15s</span>
+                        <span class="duration-current">30s</span>
+                        <span>60s</span>
+                    </div>
+                </div>
+                <div class="duration-info">
+                    <span class="duration-value" id="durationValue">30秒</span>
+                    <span class="duration-hint">短视频平台推荐时长</span>
+                </div>
+            </div>
+
+            <!-- 模板风格 -->
+            <div class="template-grid">
+                <div class="template-card active" onclick="selectTemplate('default')" data-template="default">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #000000, #333333);">
+                        <button class="template-preview-btn" onclick="event.stopPropagation(); showTemplatePreview('default')">预览</button>
+                    </div>
+                    <div class="template-info">
+                        <h4>默认</h4>
+                        <p>标准情感视频</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('cinematic')" data-template="cinematic">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
+                        <button class="template-preview-btn" onclick="event.stopPropagation(); showTemplatePreview('cinematic')">预览</button>
+                    </div>
+                    <div class="template-info">
+                        <h4>电影</h4>
+                        <p>大标题+深色调</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('minimal')" data-template="minimal">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+                        <button class="template-preview-btn" onclick="event.stopPropagation(); showTemplatePreview('minimal')">预览</button>
+                    </div>
+                    <div class="template-info">
+                        <h4>极简</h4>
+                        <p>简洁字幕+浅色调</p>
+                    </div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('neon')" data-template="neon">
+                    <div class="template-preview" style="background: linear-gradient(135deg, #0f0f23, #e94560);">
+                        <button class="template-preview-btn" onclick="event.stopPropagation(); showTemplatePreview('neon')">预览</button>
+                    </div>
+                    <div class="template-info">
+                        <h4>霓虹</h4>
+                        <p>发光字幕+暗色调</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="form-grid">
+            <!-- 步骤2: 主题 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L11 18l5-5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">视频主题<span class="step-tag">STEP 2</span></h3>
+                </div>
+                <div class="form-group">
+                    <label for="theme">视频主题</label>
+                    <input type="text" id="theme" placeholder="如：东京夜行、人生旅程" value="彪悍的人生不需要解释">
+                    <button class="btn-preview" onclick="previewNarrative()">预览文案</button>
+                </div>
+                <!-- 文案预览区域 -->
+                <div id="narrativePreview" style="display: none;">
+                    <div class="preview-header">
+                        <span class="preview-label">AI 生成的文案</span>
+                        <button class="btn-regenerate" onclick="previewNarrative()">重新生成</button>
+                    </div>
+                    <div class="preview-content">
+                        <div class="preview-item">
+                            <label>标题文案</label>
+                            <input type="text" id="titleTextPreview" placeholder="标题文案">
+                        </div>
+                        <div class="preview-item">
+                            <label>旁白文案</label>
+                            <textarea id="narrationScriptPreview" rows="4" placeholder="旁白文案"></textarea>
+                        </div>
+                        <div class="preview-info" id="narrativeInfo"></div>
+                        <div class="preview-actions">
+                            <button class="btn-confirm" id="confirmNarrativeBtn" onclick="confirmNarrative()" style="display: none;">
+                                确认文案
+                            </button>
+                            <span class="flow-hint">确认文案后可生成语音预览</span>
+                        </div>
+                    </div>
+
+                    <!-- TTS 语音预览 -->
+                    <div class="tts-preview-section" id="ttsPreviewSection">
+                        <div class="preview-header">
+                            <span class="preview-label">TTS 语音预览</span>
+                            <button class="btn-tts-generate" onclick="generateTTSPreview()">生成语音预览</button>
+                        </div>
+
+                        <!-- TTS 预览播放器 -->
+                        <div class="tts-player" id="ttsPlayer" style="display: none;">
+                            <audio id="ttsPreviewAudio" preload="metadata"></audio>
+                            <div class="tts-controls">
+                                <button class="tts-btn" id="ttsPlayPauseBtn" onclick="toggleTTSPlayPause()">
+                                    <svg id="ttsPlayIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                    <svg id="ttsPauseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                        <rect x="6" y="4" width="4" height="16"/>
+                                        <rect x="14" y="4" width="4" height="16"/>
+                                    </svg>
+                                </button>
+                                <div class="tts-progress">
+                                    <div class="tts-progress-bar" id="ttsProgressBar" onclick="seekTTS(event)">
+                                        <div class="tts-progress-fill" id="ttsProgressFill"></div>
+                                    </div>
+                                    <div class="tts-time">
+                                        <span id="ttsCurrentTime">0:00</span>
+                                        <span id="ttsDuration">0:00</span>
+                                    </div>
+                                </div>
+                                <div class="tts-info">
+                                    <span id="ttsVoiceInfo">当前音色</span>
+                                    <span id="ttsInstructionInfo"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TTS 重新调整 -->
+                        <div class="tts-adjust-section" id="ttsAdjustSection">
+                            <div class="adjust-header">调整语音风格</div>
+                            <div class="adjust-options">
+                                <div class="adjust-group">
+                                    <label>音色</label>
+                                    <select id="ttsPreviewVoice" onchange="updateTTSPreviewVoice()">
+                                        <!-- 动态填充 -->
+                                    </select>
+                                </div>
+                                <div class="adjust-group">
+                                    <label>语速</label>
+                                    <select id="ttsPreviewSpeed" onchange="updateTTSPreviewInstruction()">
+                                        <option value="speed_normal">适中</option>
+                                        <option value="speed_fast">快速</option>
+                                        <option value="speed_slow">缓慢</option>
+                                    </select>
+                                </div>
+                                <div class="adjust-group">
+                                    <label>情感</label>
+                                    <select id="ttsPreviewEmotion" onchange="updateTTSPreviewInstruction()">
+                                        <option value="emotion_warm">温暖</option>
+                                        <option value="emotion_energetic">激情</option>
+                                        <option value="emotion_calm">平和</option>
+                                        <option value="emotion_serious">沉稳</option>
+                                        <option value="emotion_lively">活泼</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="adjust-instruction-preview">
+                                <label>语音指令预览</label>
+                                <div class="instruction-text" id="ttsPreviewInstructionText"></div>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn-regenerate-tts" onclick="regenerateTTSPreview()">重新生成语音</button>
+                                <button class="btn-confirm" id="confirmTTSBtn" onclick="confirmTTS()" style="display: none;">
+                                    确认语音参数
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤3: 音乐 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">背景音乐<span class="step-tag">STEP 3</span></h3>
+                </div>
+                <input type="file" id="bgm" accept=".mp3,.wav,.aac,.m4a" style="display: none;">
+                <div class="upload-area" id="bgmUploadArea" onclick="document.getElementById('bgm').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <p id="bgmUploadText">点击上传 MP3 / WAV / M4A</p>
+                </div>
+                <!-- 试听控制 -->
+                <div class="audio-player" id="audioPlayer" style="display: none;">
+                    <audio id="bgmAudio" preload="metadata"></audio>
+                    <div class="audio-controls">
+                        <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">
+                            <svg id="playIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            <svg id="pauseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                <rect x="6" y="4" width="4" height="16"/>
+                                <rect x="14" y="4" width="4" height="16"/>
+                            </svg>
+                        </button>
+                        <div class="audio-progress">
+                            <div class="audio-progress-bar" id="audioProgressBar" onclick="seekAudio(event)">
+                                <div class="audio-progress-fill" id="audioProgressFill"></div>
+                            </div>
+                            <div class="audio-time">
+                                <span id="audioCurrentTime">0:00</span>
+                                <span id="audioDuration">0:00</span>
+                            </div>
+                        </div>
+                        <input type="range" class="audio-volume" id="audioVolume" min="0" max="100" value="80" onchange="setAudioVolume(this.value)">
+                        <button class="audio-btn" onclick="removeBgmFile()">✕</button>
+                    </div>
+                </div>
+
+                <!-- 能量分析预览 -->
+                <div class="energy-preview-section" id="energyPreviewSection" style="display: none;">
+                    <div class="energy-header">
+                        <span class="energy-label">能量分析预览</span>
+                        <span class="energy-status" id="energyStatus">分析中...</span>
+                    </div>
+                    <div class="energy-bar-container">
+                        <div class="energy-bar" id="energyBar">
+                            <div class="energy-fill" id="energyFill"></div>
+                            <div class="energy-peaks" id="energyPeaks"></div>
+                        </div>
+                        <div class="energy-markers">
+                            <span class="marker low">低能量</span>
+                            <span class="marker medium">中能量</span>
+                            <span class="marker high">高能量</span>
+                        </div>
+                    </div>
+                    <div class="energy-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">预计片段数</span>
+                            <span class="stat-value" id="segmentCountEstimate">12-15</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">高能量片段</span>
+                            <span class="stat-value" id="highEnergySegments">6-8</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">快切时长</span>
+                            <span class="stat-value" id="fastCutDuration">1.5-2s</span>
+                        </div>
+                    </div>
+                    <div class="energy-note">短视频模式将自动使用快切转场</div>
+                </div>
+            </div>
+
+            <!-- 步骤4: 风格 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">情感风格<span class="step-tag">STEP 4</span></h3>
+                </div>
+                <div class="form-group">
+                    <label for="style">风格预设</label>
+                    <select id="style">
+                        <option value="热血">热血</option>
+                        <option value="励志" selected>励志</option>
+                        <option value="治愈">治愈</option>
+                        <option value="文艺">文艺</option>
+                        <option value="欢快">欢快</option>
+                    </select>
+                </div>
+                <div class="style-grid">
+                    <button class="style-btn" onclick="setStyle('热血')">热血</button>
+                    <button class="style-btn active" onclick="setStyle('励志')">励志</button>
+                    <button class="style-btn" onclick="setStyle('治愈')">治愈</button>
+                    <button class="style-btn" onclick="setStyle('文艺')">文艺</button>
+                    <button class="style-btn" onclick="setStyle('欢快')">欢快</button>
+                </div>
+
+                <!-- 转场强度 -->
+                <div class="form-group">
+                    <label for="transitionIntensity">转场强度</label>
+                    <div class="transition-selector">
+                        <div class="transition-option" onclick="selectTransition('normal')" data-transition="normal">
+                            <div class="transition-preview transition-normal"></div>
+                            <span class="transition-name">标准</span>
+                            <span class="transition-desc">0.3-0.5s 平滑过渡</span>
+                        </div>
+                        <div class="transition-option active" onclick="selectTransition('fast')" data-transition="fast">
+                            <div class="transition-preview transition-fast"></div>
+                            <span class="transition-name">快切</span>
+                            <span class="transition-desc">0.08-0.15s 快速切换</span>
+                        </div>
+                        <div class="transition-option" onclick="selectTransition('cinematic')" data-transition="cinematic">
+                            <div class="transition-preview transition-cinematic"></div>
+                            <span class="transition-name">电影感</span>
+                            <span class="transition-desc">0.5-1s 专业叙事</span>
+                        </div>
+                    </div>
+                    <div class="transition-note" id="transitionNote">短视频模式默认使用快切转场，提升观看节奏感</div>
+                </div>
+            </div>
+
+            <!-- 步骤5: TTS -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                            <path d="M19 10v2a7 7 0 01-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">语音合成<span class="step-tag">STEP 5</span></h3>
+                </div>
+                <div class="form-group">
+                    <label for="ttsProvider">TTS 提供者</label>
+                    <select id="ttsProvider">
+                        <option value="moss" selected>MOSS-TTS（推荐）</option>
+                        <option value="edge">Edge-TTS（免费）</option>
+                        <option value="dashscope">阿里百炼</option>
+                        <option value="cosyvoice">本地 CosyVoice</option>
+                    </select>
+                </div>
+                <div id="mossSettings" style="display:none;">
+                    <!-- 音色推荐区域 -->
+                    <div class="voice-recommendation-section" id="voiceRecommendationSection">
+                        <div class="voice-header">
+                            <span class="voice-label">AI 推荐音色</span>
+                            <button class="btn-refresh-voice" onclick="refreshVoiceRecommendation()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+                                    <path d="M21 3v5h-5"/>
+                                </svg>
+                                刷新推荐
+                            </button>
+                        </div>
+                        <div class="voice-info-card" id="recommendedVoiceCard">
+                            <div class="voice-avatar" id="voiceAvatar">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="8" r="4"/>
+                                    <path d="M20 21a8 8 0 10-16 0"/>
+                                </svg>
+                            </div>
+                            <div class="voice-details">
+                                <div class="voice-name" id="voiceName">成年女声 - 温暖治愈</div>
+                                <div class="voice-tags">
+                                    <span class="voice-tag" id="voiceGenderTag">女声</span>
+                                    <span class="voice-tag" id="voiceAgeTag">成年</span>
+                                    <span class="voice-tag" id="voiceToneTag">温暖</span>
+                                </div>
+                                <div class="voice-desc" id="voiceDesc">适合治愈风格的视频</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="voiceSelect">选择音色</label>
+                            <select id="voiceSelect" onchange="onVoiceChange()">
+                                <option value="">AI 推荐音色</option>
+                                <!-- 动态填充 -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- MOSS-TTS 模板调整 -->
+                    <div class="moss-template-section">
+                        <div class="template-header">语音风格调整</div>
+
+                        <!-- 预设模板 -->
+                        <div class="template-group">
+                            <label>预设风格</label>
+                            <div class="preset-buttons">
+                                <button class="preset-btn" onclick="applyPresetTemplate('preset_energetic')">
+                                    <span class="preset-icon">🔥</span>
+                                    <span class="preset-name">热血活力</span>
+                                </button>
+                                <button class="preset-btn" onclick="applyPresetTemplate('preset_calm')">
+                                    <span class="preset-icon">🌿</span>
+                                    <span class="preset-name">舒缓治愈</span>
+                                </button>
+                                <button class="preset-btn" onclick="applyPresetTemplate('preset_storytelling')">
+                                    <span class="preset-icon">📖</span>
+                                    <span class="preset-name">故事讲述</span>
+                                </button>
+                                <button class="preset-btn" onclick="applyPresetTemplate('preset_news')">
+                                    <span class="preset-icon">📺</span>
+                                    <span class="preset-name">新闻播音</span>
+                                </button>
+                                <button class="preset-btn" onclick="applyPresetTemplate('preset_podcast')">
+                                    <span class="preset-icon">🎙️</span>
+                                    <span class="preset-name">轻松聊天</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 语速调整 -->
+                        <div class="template-group">
+                            <label>语速</label>
+                            <div class="template-options">
+                                <button class="template-btn" onclick="applySpeedTemplate('speed_fast')">快速</button>
+                                <button class="template-btn active" onclick="applySpeedTemplate('speed_normal')">适中</button>
+                                <button class="template-btn" onclick="applySpeedTemplate('speed_slow')">缓慢</button>
+                            </div>
+                        </div>
+
+                        <!-- 停顿调整 -->
+                        <div class="template-group">
+                            <label>停顿</label>
+                            <div class="template-options">
+                                <button class="template-btn" onclick="applyPauseTemplate('pause_short')">短停顿</button>
+                                <button class="template-btn active" onclick="applyPauseTemplate('pause_normal')">适中</button>
+                                <button class="template-btn" onclick="applyPauseTemplate('pause_long')">长停顿</button>
+                            </div>
+                        </div>
+
+                        <!-- 情感调整 -->
+                        <div class="template-group">
+                            <label>情感风格</label>
+                            <div class="template-options">
+                                <button class="template-btn" onclick="applyEmotionTemplate('emotion_energetic')">激情</button>
+                                <button class="template-btn" onclick="applyEmotionTemplate('emotion_calm')">平和</button>
+                                <button class="template-btn" onclick="applyEmotionTemplate('emotion_warm')">温暖</button>
+                                <button class="template-btn" onclick="applyEmotionTemplate('emotion_serious')">沉稳</button>
+                                <button class="template-btn" onclick="applyEmotionTemplate('emotion_lively')">活泼</button>
+                            </div>
+                        </div>
+
+                        <!-- 最终指令预览 -->
+                        <div class="instruction-preview-section">
+                            <label>生成的语音指令</label>
+                            <div class="instruction-preview" id="instructionPreview">
+                                成年女性声音，语调温柔、舒缓治愈，语速适中，句间停顿适中，平稳自然
+                            </div>
+                            <div class="form-group">
+                                <label for="mossInstruction">自定义调整</label>
+                                <textarea id="mossInstruction" rows="2" placeholder="可手动编辑或输入额外指令..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cosyvoiceSettings" style="display:none;">
+                    <div class="form-group">
+                        <label for="cosyvoiceVoice">CosyVoice 风格</label>
+                        <select id="cosyvoiceVoice">
+                            <option value="normal">默认</option>
+                            <option value="guangdong">广东话</option>
+                            <option value="dongbei">东北话</option>
+                            <option value="fast">快语速</option>
+                            <option value="slow">慢语速</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤6: 字幕样式 -->
+            <div class="card full-width">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="4 7 4 4 20 4 20 7"/>
+                            <line x1="9" y1="20" x2="15" y2="20"/>
+                            <line x1="12" y1="4" x2="12" y2="20"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">字幕样式<span class="step-tag">STEP 6</span></h3>
+                </div>
+
+                <!-- 当前模板预览 -->
+                <div class="subtitle-demo-container">
+                    <div class="subtitle-demo-frame" id="subtitleDemoFrame">
+                        <div class="demo-video-bg"></div>
+                        <div class="demo-subtitle" id="demoSubtitle">城市的夜晚</div>
+                        <div class="demo-position-indicator">
+                            <span class="position-label">字幕位置: 底部居中</span>
+                        </div>
+                    </div>
+                    <div class="subtitle-demo-info">
+                        <div class="demo-info-item">
+                            <span class="info-label">当前模板</span>
+                            <span class="info-value" id="demoTemplateInfo">默认</span>
+                        </div>
+                        <div class="demo-info-item">
+                            <span class="info-label">视频尺寸</span>
+                            <span class="info-value" id="demoRatioInfo">16:9 横屏</span>
+                        </div>
+                        <div class="demo-info-item">
+                            <span class="info-label">字幕大小</span>
+                            <span class="info-value" id="demoSizeInfo">48px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 样式选择 -->
+                <div class="subtitle-style-grid">
+                    <div class="style-option active" onclick="selectSubtitleStyle('impact')" data-style="impact">
+                        <div class="style-preview" data-style="impact">
+                            <span class="style-preview-text">冲击力</span>
+                        </div>
+                        <div class="style-name">冲击力</div>
+                        <div class="style-desc">大字体粗边框</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('minimal')" data-style="minimal">
+                        <div class="style-preview" data-style="minimal">
+                            <span class="style-preview-text">极简</span>
+                        </div>
+                        <div class="style-name">极简</div>
+                        <div class="style-desc">小字体无边框</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('neon')" data-style="neon">
+                        <div class="style-preview" data-style="neon">
+                            <span class="style-preview-text">霓虹</span>
+                        </div>
+                        <div class="style-name">霓虹</div>
+                        <div class="style-desc">发光效果</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('cinematic')" data-style="cinematic">
+                        <div class="style-preview" data-style="cinematic">
+                            <span class="style-preview-text">电影</span>
+                        </div>
+                        <div class="style-name">电影</div>
+                        <div class="style-desc">专业叙事</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('typewriter')" data-style="typewriter">
+                        <div class="style-preview" data-style="typewriter">
+                            <span class="style-preview-text">打字机</span>
+                        </div>
+                        <div class="style-name">打字机</div>
+                        <div class="style-desc">逐字显示</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('bounce')" data-style="bounce">
+                        <div class="style-preview" data-style="bounce">
+                            <span class="style-preview-text">弹跳</span>
+                        </div>
+                        <div class="style-name">弹跳</div>
+                        <div class="style-desc">活泼可爱</div>
+                    </div>
+                    <div class="style-option" onclick="selectSubtitleStyle('card')" data-style="card">
+                        <div class="style-preview" data-style="card">
+                            <span class="style-preview-text">卡片</span>
+                        </div>
+                        <div class="style-name">卡片</div>
+                        <div class="style-desc">黑底白字</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 素材来源 -->
+            <div class="card full-width" id="user-assets">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="M21 15l-5-5L5 21"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">素材来源</h3>
+                </div>
+                <div class="form-group">
+                    <label for="visualMode">素材来源</label>
+                    <select id="visualMode">
+                        <option value="auto" selected>自动匹配（推荐）- 多源轮询下载</option>
+                        <option value="pexels">Pexels 视频库</option>
+                        <option value="pixabay">Pixabay 视频库</option>
+                        <option value="coverr">Coverr 视频（免费）</option>
+                        <option value="mixkit">Mixkit 视频（免费）</option>
+                        <option value="videvo">Videvo 4K视频（免费）</option>
+                        <option value="videezy">Videezy 航拍（免费）</option>
+                        <option value="mazwai">Mazwai 电影感（免费）</option>
+                        <option value="dareful">Dareful 4K精选（免费）</option>
+                        <option value="lifeofvids">Life of Vids（免费）</option>
+                        <option value="user">仅使用我的素材</option>
+                        <option value="generate">生成动态背景</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>上传自定义素材</label>
+                    <input type="file" id="userAsset" accept=".jpg,.jpeg,.png,.mp4,.mov,.webm" multiple>
+                    <div class="file-name" id="userAssetFileName">未选择文件</div>
+                </div>
+                <div id="userAssetsList" class="assets-grid"></div>
+                <div id="analysisResult" class="analysis-result" style="display:none;"></div>
+            </div>
+
+            <!-- API 配置 -->
+            <div class="api-config-section" id="api-settings">
+                <div class="api-config-header" onclick="toggleApiConfig()">
+                    <span class="api-config-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                        </svg>
+                        API 配置
+                    </span>
+                    <span class="api-config-toggle">点击展开 ▼</span>
+                </div>
+                <div class="api-config-content" id="apiConfigContent">
+                    <div class="api-grid">
+                        <div class="api-field">
+                            <label for="dashscopeKey">DASHSCOPE API KEY</label>
+                            <input type="password" id="dashscopeKey" placeholder="sk-...">
+                        </div>
+                        <div class="api-field">
+                            <label for="mossKey">MOSS API KEY</label>
+                            <input type="password" id="mossKey" placeholder="sk-...">
+                        </div>
+                        <div class="api-field">
+                            <label for="pexelsKey">PEXELS API KEY</label>
+                            <input type="password" id="pexelsKey" placeholder="API Key">
+                        </div>
+                        <div class="api-field">
+                            <label for="pixabayKey">PIXABAY API KEY</label>
+                            <input type="password" id="pixabayKey" placeholder="API Key">
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="saveApiConfig()" style="margin-top: 16px;">保存配置</button>
+                    <div id="configStatus" class="status-message" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 错误消息 -->
+            <div id="errorMessage" class="error-message" style="grid-column: 1 / -1;"></div>
+
+            <!-- 步骤7: 生成按钮 -->
+            <div class="action-section" style="grid-column: 1 / -1;">
+                <button class="btn-primary" id="produceBtn" onclick="startProduction()" style="padding: 16px 48px;">
+                    开始生成视频
+                </button>
+            </div>
+        </div>
+
+        <!-- 进度 -->
+        <section id="progressSection" class="progress-section">
+            <h3>生成进度</h3>
+            <div class="progress-percent" id="progressPercent">0%</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" id="step1" data-step="1">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">音乐分析</div>
+                </div>
+                <div class="step" id="step2" data-step="2">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">AI叙事</div>
+                </div>
+                <div class="step" id="step3" data-step="3">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">素材下载</div>
+                </div>
+                <div class="step" id="step4" data-step="4">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">TTS生成</div>
+                </div>
+                <div class="step" id="step5" data-step="5">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">视频渲染</div>
+                </div>
+                <div class="step" id="step6" data-step="6">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <div class="step-name">完成</div>
+                </div>
+            </div>
+            <div id="progressLog" class="progress-log"></div>
+        </section>
+
+        <!-- 输出 -->
+        <section id="outputSection" class="output-section">
+            <h3>输出视频</h3>
+            <div class="output-video-wrapper" id="outputVideoWrapper">
+                <video class="video-preview" id="outputVideo" controls></video>
+            </div>
+            <p class="output-info" id="outputInfo"></p>
+            <button class="btn-primary download-btn" id="downloadBtn" onclick="downloadVideo()">下载视频</button>
+        </section>
+    </main>
+
+    <!-- 模板预览模态框 -->
+    <div class="preview-modal" id="previewModal">
+        <div class="preview-modal-content">
+            <button class="preview-modal-close" onclick="closePreviewModal()">×</button>
+            <div class="preview-video-container">
+                <video id="previewVideo" autoplay muted loop playsinline></video>
+            </div>
+            <div class="preview-info">
+                <h4 id="previewTitle">模板名称</h4>
+                <p id="previewDesc">模板描述</p>
+                <button class="btn-primary preview-apply-btn" onclick="applyPreviewTemplate()">应用此模板</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Emotion Video Producer — 情感驱动视频生产系统</p>
+        <p>Figma Design.md Light</p>
+    </footer>
+
+    <script src="/web/static/app.js"></script>
+    <script>
+        // API 配置折叠
+        function toggleApiConfig() {
+            const content = document.getElementById('apiConfigContent');
+            content.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

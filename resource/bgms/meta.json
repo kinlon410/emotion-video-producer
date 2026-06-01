@@ -1,0 +1,84 @@
+{
+  "description": "音乐素材库 - 语义标签",
+  "version": "1.0",
+  "tracks": [
+    {
+      "id": "bgm01",
+      "file": "bgm01.m4a",
+      "description": "激昂奋进的电子音乐，适合励志类视频",
+      "tags": {
+        "scene": ["Vlog", "Travel", "Outdoor"],
+        "genre": ["Electronic", "Pop"],
+        "mood": ["Dynamic", "Excited", "Inspirational"],
+        "lang": "bgm"
+      },
+      "bpm": 128,
+      "duration": 20
+    },
+    {
+      "id": "bgm02",
+      "file": "bgm02.m4a",
+      "description": "温柔治愈的钢琴旋律，适合情感类视频",
+      "tags": {
+        "scene": ["Relaxing", "Emotion", "Scenery"],
+        "genre": ["Classical", "Folk"],
+        "mood": ["Calm", "Healing", "Sorrow"],
+        "lang": "bgm"
+      },
+      "bpm": 72,
+      "duration": 20
+    },
+    {
+      "id": "bgm03",
+      "file": "bgm03_placeholder.m4a",
+      "description": "轻快活泼的流行音乐，适合美食/节日类视频",
+      "tags": {
+        "scene": ["Food", "Cafe", "Date"],
+        "genre": ["Pop", "R&B/Soul"],
+        "mood": ["Happy", "Chill"],
+        "lang": "bgm"
+      },
+      "bpm": 100,
+      "duration": 20
+    },
+    {
+      "id": "bgm04",
+      "file": "bgm04_placeholder.m4a",
+      "description": "浪漫柔情的弦乐，适合爱情/婚礼类视频",
+      "tags": {
+        "scene": ["Date", "Evening", "Scenery"],
+        "genre": ["Classical", "R&B/Soul"],
+        "mood": ["Romantic", "Calm"],
+        "lang": "bgm"
+      },
+      "bpm": 80,
+      "duration": 20
+    },
+    {
+      "id": "bgm05",
+      "file": "bgm05_placeholder.m4a",
+      "description": "热血激动的摇滚音乐，适合运动/挑战类视频",
+      "tags": {
+        "scene": ["Outdoor", "Club"],
+        "genre": ["Rock", "Hip Hop/Rap"],
+        "mood": ["Dynamic", "Excited"],
+        "lang": "bgm"
+      },
+      "bpm": 140,
+      "duration": 20
+    },
+    {
+      "id": "bgm06",
+      "file": "bgm06_placeholder.m4a",
+      "description": "文艺诗意的中国风音乐，适合古风/文艺类视频",
+      "tags": {
+        "scene": ["Scenery", "Travel"],
+        "genre": ["Chinese Style", "Folk"],
+        "mood": ["Calm", "Inspirational"],
+        "lang": "bgm"
+      },
+      "bpm": 90,
+      "duration": 20
+    }
+  ]
+}

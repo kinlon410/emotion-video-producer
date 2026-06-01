@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Skill Library Index",
+  "description": "Index of saved workflow skills/templates",
+  "skills": []
+}

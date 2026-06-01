@@ -46,6 +46,8 @@ cp .env.example .env
 # - PEXELS_API_KEY: https://www.pexels.com/api/
 ```
 
+Do not commit `.env`, browser-exported credentials, or any local config file containing API keys. This repository is configured to keep those files out of Git by default.
+
 ### 3. Generate a Video
 
 ```bash
@@ -129,6 +131,14 @@ TTS Generation → ASR Sync → Video Rendering → Output
 ## License
 
 MIT License - see [LICENSE](LICENSE) file.
+
+---
+
+## Open Source Safety
+
+- Keep all API keys in environment variables or in the local UI config stored under `~/.emotion-video-producer/`.
+- Do not commit `.env`, model weights, generated videos, uploaded user media, or local cache directories.
+- Download `CosyVoice` code and pretrained models separately; they are intentionally excluded from version control.
 
 ---
 

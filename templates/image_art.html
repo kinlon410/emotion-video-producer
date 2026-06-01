@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Image Art - 图片艺术模板</title>
+<style>
+:root {
+  /* 尺寸 */
+  --width: 1920;
+  --height: 1080;
+  --fps: 30;
+
+  /* 字幕样式 */
+  --subtitle-fontsize: 36;
+  --subtitle-fontcolor: white@0.85;
+  --subtitle-borderw: 0;
+  --subtitle-bordercolor: transparent;
+  --subtitle-position-y: h-120;
+  --subtitle-bold: false;
+
+  /* 标题样式 */
+  --title-fontsize: 48;
+  --title-fontcolor: white;
+  --title-borderw: 1;
+  --title-bordercolor: black@0.4;
+  --title-position-y: 80;
+  --title-duration: 4;
+
+  /* 转场 */
+  --transition-type: dissolve;
+  --transition-duration: 0.45;
+
+  /* Ken Burns 效果参数 */
+  --kenburns-zoom-start: 1.0;
+  --kenburns-zoom-end: 1.2;
+  --kenburns-duration: full;
+
+  /* 图片处理 */
+  --image-blur: 5;
+  --image-overlay: gradient-black-30;
+}
+</style>
+</head>
+<body>
+<!-- 模板预览布局 -->
+<div class="preview-container" style="width: 100%; height: 100vh; background: url('placeholder.jpg') center/cover; filter: blur(5px); position: relative;">
+  <div class="overlay" style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.3));"></div>
+  <div class="title" style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%); font-size: 48px; color: white; letter-spacing: 4px;">标题文字</div>
+  <div class="subtitle" style="position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); font-size: 36px; color: rgba(255,255,255,0.85);">字幕内容</div>
+</div>
+</body>
+</html>
