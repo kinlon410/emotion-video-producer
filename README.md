@@ -130,7 +130,7 @@ TTS Generation → ASR Sync → Video Rendering → Output
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file.
+Apache License 2.0 - see [LICENSE](LICENSE) file.
 
 ---
 
@@ -283,7 +283,7 @@ TTS 生成 → ASR 同步 → 视频渲染 → 输出
 
 ## 许可证
 
-MIT 许可证 — 见 [LICENSE](LICENSE) 文件。
+Apache License 2.0 许可证 — 见 [LICENSE](LICENSE) 文件。
 
 ---
 
