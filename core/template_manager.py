@@ -331,6 +331,9 @@ class TemplateManager:
         updates = {
             "style": config["style"],
             "visual_keywords": config["visual_keywords"],
+            "transition_params": config["transition_params"],
+            "subtitle_style": config["subtitle_style"],
+            "music_tags": config["music_tags"],
         }
 
         store.update_session(session_id, updates)

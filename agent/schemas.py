@@ -101,6 +101,10 @@ class SessionState(BaseModel):
     narration_audio: Optional[str] = Field(None, description="旁白音频路径")
     clips: Optional[Dict[str, str]] = Field(None, description="素材片段路径")
     output_path: Optional[str] = Field(None, description="输出视频路径")
+    visual_keywords: Optional[List[str]] = Field(None, description="视觉关键词列表")
+    transition_params: Optional[Dict[str, Any]] = Field(None, description="转场参数")
+    subtitle_style: Optional[Dict[str, Any]] = Field(None, description="字幕样式")
+    music_tags: Optional[List[str]] = Field(None, description="音乐标签")
 
 
 class SkillDefinition(BaseModel):
